@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Always empty the dest folder, as we post-process it to add album artwork which throws everything off.
+. venv/bin/activate
 
 # no trailing slashes - force rsync to copy folder
 set -e
@@ -159,9 +159,13 @@ artists=(
    "she"
 )
 
+rm -rf "$DEST"
+
 for f in "${artists[@]}"; do
    mkdir -p "$DEST/$f"
    rsync -av "$SRC/$f/" "$DEST/$f"
 done
+
+python get_album_art.py "$DEST"
 
 echo "Dont forget to sudo fatsort -cn /dev/disk1s1"
