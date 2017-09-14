@@ -55,6 +55,14 @@ class Updater(object):
 
         self.conn = sqlite3.connect('cache.sqlite3')
         self.c = self.conn.cursor()
+        self.c.execute("""
+CREATE TABLE IF NOT EXISTS cache (
+   id INTEGER PRIMARY KEY,
+   artist TEXT NOT NULL,
+   release_title TEXT NOT NULL,
+   image BLOB,
+   unique (artist, release_title)
+)""")
 
     def bump_req_time(self):
         self.api_req_reset = datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
