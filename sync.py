@@ -5,6 +5,7 @@ import datetime
 import time
 import asyncio
 import functools
+import os
 
 import requests
 import mutagen.mp3
@@ -45,7 +46,7 @@ class Updater(object):
     USER_AGENT = 'dgilman get_album_art/1.0'
     URL_BASE = 'https://api.discogs.com'
     def __init__(self):
-        user_token = open('user_token.txt').read().strip()
+        user_token = os.environ['DISCOGS_USER_TOKEN']
 
         self.loop = asyncio.get_event_loop()
         self.read_q = asyncio.Queue(loop=self.loop, maxsize=10)
