@@ -16,6 +16,10 @@ parser.add_argument('dest', help="destination path of mp3s", type=pathlib.Path)
 
 class InvalidMP3Tagging(Exception): pass
 
+def f(strng):
+    """Clean up a string for filesystem usage."""
+    return strng.replace('/', ' ')[:28]
+
 class AsyncIteratorExecutor:
     """
     Converts a regular iterator into an asynchronous
@@ -129,7 +133,8 @@ CREATE TABLE IF NOT EXISTS cache (
         if len(tit2s) == 0:
             song_title = potential_song_title
         else:
-            song_title = tit2s[0].text[0].replace('/', ' ')
+            song_title = tit2s[0].text[0]
+        song_title = f(song_title)
 
         trcks = mp3.tags.getall('TRCK')
         if len(trcks) == 0:
@@ -153,7 +158,7 @@ CREATE TABLE IF NOT EXISTS cache (
             else:
                 tpos = int(tpos)
 
-        dest_path = self.args.dest / artist.replace('/', ' ') / release_title.replace('/', ' ') / f"{tpos:02} - {track:02} - {song_title}.mp3"
+        dest_path = self.args.dest / f(artist) / f(release_title) / f"{tpos:02} - {track:02} - {song_title}.mp3"
 
         if len(mp3.tags.getall('APIC')) > 0:
             mp3.save(blob)
