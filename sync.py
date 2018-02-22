@@ -123,8 +123,8 @@ CREATE TABLE IF NOT EXISTS cache (
             release_title = 'Unknown Album'
         else:
             release_title = talbs[0].text[0]
-        tpe1s = mp3.tags.getall('TPE1')
 
+        tpe1s = mp3.tags.getall('TPE1')
         if len(tpe1s) == 0:
             artist = 'Unknown Artist'
         else:
