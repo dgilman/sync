@@ -5,19 +5,29 @@ sync.py loads a flash drive with mp3s, formatting them to have consistent, sorta
 ## Setup
 
 1. Install Python 3.6 and mutagen
-2. Get a discogs API user token, available for free here https://www.discogs.com/settings/developers
-3. Create a file to\_sync.txt that has the directories you want copied out of the source directory. If your library is organized Artist/Album it would look like this:
+1. Get a discogs API user token, available for free here https://www.discogs.com/settings/developers
+1. Create a file to\_sync.txt that has the directories you want copied out of the source directory. If your library is organized Artist/Album it would look like this:
+
 ```
 Pink Floyd
 Radiohead
 ```
+
 You can put in subdirectories if you only want a few albums from an artist:
+
 ```
-Pink Floyd/The Dark Side of the Moon
-Pink Floyd/Wish You Were Here
-Radiohead
+Pink Floyd
+Radiohead/A Moon Shaped Pool
+Radiohead/Amnesiac
+Radiohead/The Bends
+Radiohead/Hail to the Thief
+Radiohead/In Rainbows
+Radiohead/Kid A
+Radiohead/The King of Limbs
+Radiohead/OK Computer
 ```
-would copy just the contents of the two albums and ignore any other Pink Floyd albums.
+
+would copy just the contents of the eight albums and ignore any other Radiohead album(s).
 
 ## Usage
 
@@ -25,6 +35,7 @@ would copy just the contents of the two albums and ignore any other Pink Floyd a
 export DISCOGS_USER_TOKEN=foobarbaz
 python sync.py SRC_DIR DEST_DIR
 ```
+
 The program will remind you to run fatsort on the disk when it's done.
 
 ## How it works
