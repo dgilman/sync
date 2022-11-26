@@ -130,11 +130,12 @@ CREATE TABLE IF NOT EXISTS cache (
             self.negative_cache.add(negative_cache_key)
             return None
 
-        if not image_url.endswith('jpg'):
+        if not (image_url.endswith('jpg') or image_url.endswith("jpeg")):
             print(f"Unknown URL type: {artist=} {release_title=} {image_url}")
             breakpoint()
 
-        image = await self.loop.run_in_executor(None, requests.get, image_url)
+        image = await self.loop.run_in_executor(None, self.session.get, image_url)
+        image.raise_for_status()
         image = image.content
         self.c.execute("INSERT INTO cache (artist, release_title, image) VALUES (?, ?, ?)", (artist, release_title, image))
         self.conn.commit()
@@ -309,6 +310,10 @@ CREATE TABLE IF NOT EXISTS cache (
                 import pdb; pdb.post_mortem()
                 print(str(e), 'skipping', src_path.as_posix())
                 continue
+
+            if dest_path.exists():
+                continue
+
             await self.write_q.put((blob, dest_path))
 
     async def write_files(self):
